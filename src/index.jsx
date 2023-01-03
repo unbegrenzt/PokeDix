@@ -25,6 +25,7 @@ const formatData = (data, numColumns) => {
 };
 
 const numColumns = 2;
+const factorScale = 0.75;
 
 const styles = StyleSheet.create({
   container: {
@@ -49,15 +50,10 @@ const styles = StyleSheet.create({
 
 const renderItem = ({ item }) => {
   if (item.empty === true) {
-    return <PokeCardInvisible columnsCount={numColumns} />;
+    return <PokeCardInvisible columnsCount={numColumns} factorScale={factorScale} />;
   }
   return (
-    //<View
-    //  style={styles.item}
-    //>
-    //  <Text style={styles.itemText}>{item.key}</Text>
-    //</View>
-    <PokeCardView columnsCount={numColumns} />
+    <PokeCardView columnsCount={numColumns} factorScale={factorScale} />
   );
 };
 

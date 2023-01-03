@@ -25,31 +25,38 @@ ErrorFallback.propTypes = {
   ]),
 };
 
-export default function PokeCardView({ columnsCount = 2 }) {
+export default function PokeCardView({
+  columnsCount = 2,
+  factorScale = 0.75,
+  pokeName = 'Mew',
+  pokeNumber = '#001',
+  pokePhoto = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png',
+}) {
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
     >
       <Box
-        bg="primary.600"
+        bg="trueGray.100"
         py="4"
         px="3"
         borderRadius="5"
         margin={2}
         rounded="md"
         flex={1}
-        height={(Dimensions.get('window').width / columnsCount) * 0.75}
+        height={(Dimensions.get('window').width / columnsCount) * factorScale}
       >
         <HStack>
-          <Heading color="white" size="md">PokeName</Heading>
-          <Heading color="white" size="md">#001</Heading>
+          <Heading color="darkText" size="md">{pokeName}</Heading>
+          <Text fontSize="md"> </Text>
+          <Text color="gray.500" fontSize="md">{pokeNumber}</Text>
         </HStack>
         <HStack justifyContent="center">
           <Image
             size="lg"
             resizeMode="cover"
             source={{
-              uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png',
+              uri: pokePhoto,
             }}
             alt="Pokemon image"
           />
@@ -60,9 +67,9 @@ export default function PokeCardView({ columnsCount = 2 }) {
 }
 
 PokeCardView.propTypes = {
-  columnsCount: PropTypes.number,
-};
-
-PokeCardView.defaultProps = {
-  columnsCount: 2,
+  columnsCount: PropTypes.number.isRequired,
+  factorScale: PropTypes.number.isRequired,
+  pokeName: PropTypes.string.isRequired,
+  pokeNumber: PropTypes.number.isRequired,
+  pokePhoto: PropTypes.string.isRequired,
 };

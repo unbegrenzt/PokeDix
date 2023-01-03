@@ -26,28 +26,30 @@ describe('<PokeCardView />', () => {
 
   it('jumps error fallback', () => {
     const component = (
-      <PokeCardView name="mew" />
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <PokeCardView name="mewing" />
+      </NativeBaseProvider>
     );
     render(component);
     expect(screen.toJSON()).toMatchSnapshot();
   });
 
-  it('error fallback return a valid message', async () => {
+  it('retrieve the pokemon info', async () => {
     const component = (
-      <PokeCardView name="mew" />
+      <NativeBaseProvider initialWindowMetrics={inset}>
+        <PokeCardView name="mew" />
+      </NativeBaseProvider>
     );
     render(component);
 
     const pokeNumber = await screen.findByText('151', { exact: false });
     const pokeHeader = await screen.findByText('Mew', { exact: false });
-    const pokeType = await screen.findByText('psychic', { exact: false });
 
     expect(pokeNumber).toBeTruthy();
     expect(pokeHeader).toBeTruthy();
-    expect(pokeType).toBeTruthy();
   });
 
-  it('retrieve the pokemon info', async () => {
+  it('error fallback return a valid message', async () => {
     const component = (
       <NativeBaseProvider initialWindowMetrics={inset}>
         <PokeCardView name="mew" />

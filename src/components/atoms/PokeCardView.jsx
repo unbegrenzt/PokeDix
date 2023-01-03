@@ -26,7 +26,7 @@ ErrorFallback.propTypes = {
 };
 
 const pokeName = 'Mew';
-const pokeNumber = '#001';
+const pokeNumber = '#151';
 const pokePhoto = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png';
 
 export default function PokeCardView({

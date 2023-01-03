@@ -142,4 +142,7 @@ package-lock.json
 
 .expo
 
-**/__snapshots__
+**/__snapshots__/**
+**/__snapshots__/
+*/__snapshots__/*
+/__snapshots__

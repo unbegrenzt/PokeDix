@@ -25,12 +25,15 @@ ErrorFallback.propTypes = {
   ]),
 };
 
+const pokeName = 'Mew';
+const pokeNumber = '#001';
+const pokePhoto = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png';
+
 export default function PokeCardView({
   columnsCount = 2,
   factorScale = 0.75,
-  pokeName = 'Mew',
-  pokeNumber = '#001',
-  pokePhoto = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png',
+  pokeNameId = 'Mew',
+  pokeNumberId = 151,
 }) {
   return (
     <ErrorBoundary
@@ -69,7 +72,6 @@ export default function PokeCardView({
 PokeCardView.propTypes = {
   columnsCount: PropTypes.number.isRequired,
   factorScale: PropTypes.number.isRequired,
-  pokeName: PropTypes.string.isRequired,
-  pokeNumber: PropTypes.number.isRequired,
-  pokePhoto: PropTypes.string.isRequired,
+  pokeNameId: PropTypes.string.isRequired,
+  pokeNumberId: PropTypes.number.isRequired,
 };

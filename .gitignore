@@ -141,3 +141,5 @@ package-lock.json
 .metro-health-check*
 
 .expo
+
+**/__snapshots__

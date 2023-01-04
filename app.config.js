@@ -1,6 +1,5 @@
-// app.config.js
-export default {
-  expo: {
+module.exports = {
+  extra: {
     apiUrl: 'https://pokeapi.co/api/v2/',
   },
 };

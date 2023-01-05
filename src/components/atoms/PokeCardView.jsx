@@ -75,9 +75,9 @@ export default function PokeCardView({
   return (
     <>
       {/* {status === 'error' && <ErrorFallback error={error} />} */}
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        {status === 'error' && <ErrorFallback error={error} />}
-        {status === 'success' && (<Box
+      {status === 'error' && <ErrorFallback error={error} />}
+      {status === 'pending' && (
+        <Box
           bg="trueGray.100"
           py="4"
           px="3"
@@ -107,8 +107,41 @@ export default function PokeCardView({
               />
             </Skeleton>
           </HStack>
-        </Box>)}
-      </ErrorBoundary>
+        </Box>
+      )}
+      {status === 'success' && (
+        <Box
+          bg="trueGray.100"
+          py="4"
+          px="3"
+          borderRadius="5"
+          margin={2}
+          rounded="md"
+          flex={1}
+          height={getHeightFromRelativeToLayout(columnsCount, factorScale)}
+        >
+          <HStack>
+            <Skeleton.Text lines={1} isLoaded={status !== 'pending'}>
+              <Heading color="darkText" size="md">{pokeName}</Heading>
+              <Heading color="darkText" size="md">{pokeName}</Heading>
+              <Text fontSize="md"> </Text>
+              <Text color="gray.500" fontSize="md">{pokeNumber}</Text>
+            </Skeleton.Text>
+          </HStack>
+          <HStack justifyContent="center">
+            <Skeleton h={getHeightFromRelativeToLayout(columnsCount, 0.45)} mt={3} isLoaded={status !== 'pending'}>
+              <Image
+                size="lg"
+                resizeMode="cover"
+                source={{
+                  uri: pokePhoto,
+                }}
+                alt="Pokemon image"
+              />
+            </Skeleton>
+          </HStack>
+        </Box>
+      )}
     </>
   );
 }

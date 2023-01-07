@@ -1,41 +1,8 @@
 import { React } from 'react';
-import {
-  Box, HStack, Text, Image, Heading, Skeleton, Card,
-} from 'native-base';
 import PropTypes from 'prop-types';
-import { getHeightFromRelativeToLayout } from '_utils/calculators';
 import { useAsync } from '_hooks/index';
 import { CardLayout, CardTitle, CardImage } from '_components/atoms/index';
-
-function ErrorFallback({ error }) {
-  return (
-    <CardLayout>
-      <HStack>
-        <Heading color="darkText" size="md">No se pudo cargar</Heading>
-      </HStack>
-      <HStack justifyContent="center">
-        <Image
-          size="lg"
-          resizeMode="cover"
-          source={{
-            uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png',
-          }}
-          alt="Pokemon image"
-        />
-      </HStack>
-    </CardLayout>
-  );
-}
-ErrorFallback.defaultProps = {
-  error: { message: 'default error message' },
-};
-
-ErrorFallback.propTypes = {
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.any,
-  ]),
-};
+import PokeCardErrorView from './PokeCardErrorView';
 
 // An async function for testing our hook.
 // Will be successful 50% of the time.
@@ -63,7 +30,7 @@ export default function PokeCardView({
   return (
     <>
       {status === 'error' && (
-        <ErrorFallback error={error} />
+        <PokeCardErrorView error={error} />
       )}
       {status === 'pending' && (
         <CardLayout

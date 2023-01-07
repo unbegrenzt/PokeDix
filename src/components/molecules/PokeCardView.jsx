@@ -5,17 +5,13 @@ import {
 import PropTypes from 'prop-types';
 import { getHeightFromRelativeToLayout } from '_utils/calculators';
 import { useAsync } from '_hooks/index';
-import Constants from 'expo-constants';
-import { ErrorBoundary } from 'react-error-boundary';
-import { CardLayout, CardTitle } from '_components/atoms/index';
+import { CardLayout, CardTitle, CardImage } from '_components/atoms/index';
 
 function ErrorFallback({ error }) {
   return (
     <CardLayout>
       <HStack>
         <Heading color="darkText" size="md">No se pudo cargar</Heading>
-        <Text fontSize="md"> </Text>
-        <Text color="gray.500" fontSize="md">#000</Text>
       </HStack>
       <HStack justifyContent="center">
         <Image
@@ -61,7 +57,7 @@ export default function PokeCardView({
   pokeNameId = 'Mew',
 }) {
   const {
-    execute, status, value, error,
+    status, value, error,
   } = useAsync(myFunction);
 
   return (
@@ -74,43 +70,28 @@ export default function PokeCardView({
           columnsCount={columnsCount}
           factorScale={factorScale}
         >
-          <CardTitle isLoading />
-          <HStack justifyContent="center">
-            <Skeleton h={getHeightFromRelativeToLayout(columnsCount, 0.45)} mt={3} isLoaded={status !== 'pending'}>
-              <Image
-                size="lg"
-                resizeMode="cover"
-                source={{
-                  uri: pokePhoto,
-                }}
-                alt="Pokemon image"
-              />
-            </Skeleton>
-          </HStack>
+          <CardTitle
+            isLoading
+          />
+          <CardImage
+            isLoading
+          />
         </CardLayout>
       )}
       {status === 'success' && (
-        <CardLayout>
+        <CardLayout
+          columnsCount={columnsCount}
+          factorScale={factorScale}
+        >
           <CardTitle
             pokeName={pokeName}
             pokeNumber={pokeNumber}
           />
-          <HStack justifyContent="center">
-            <Skeleton
-              h={getHeightFromRelativeToLayout(columnsCount, 0.45)}
-              mt={3}
-              isLoaded={status !== 'pending'}
-            >
-              <Image
-                size="lg"
-                resizeMode="cover"
-                source={{
-                  uri: pokePhoto,
-                }}
-                alt="Pokemon image"
-              />
-            </Skeleton>
-          </HStack>
+          <CardImage
+            columnsCount={columnsCount}
+            factorScale={factorScale}
+            pokePhoto={pokePhoto}
+          />
         </CardLayout>
       )}
     </>

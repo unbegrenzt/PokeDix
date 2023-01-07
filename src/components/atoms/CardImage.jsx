@@ -1,5 +1,5 @@
 import {
-  Heading, HStack, Skeleton, Text,
+  HStack, Image, Skeleton,
 } from 'native-base';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -15,28 +15,22 @@ export default function CardImage({
     <HStack justifyContent="center">
       <Choose>
         <When condition={isLoading}>
-          <Skeleton.Text lines={1} />
+          <Skeleton
+            h={getHeightFromRelativeToLayout(columnsCount, factorScale)}
+            mt={3}
+          />
         </When>
         <Otherwise>
-          <Heading color="darkText" size="md">{pokeName}</Heading>
-          <Text fontSize="md"> </Text>
-          <Text color="gray.500" fontSize="md">{pokeNumber}</Text>
+          <Image
+            size="lg"
+            resizeMode="cover"
+            source={{
+              uri: pokePhoto,
+            }}
+            alt="Pokemon image"
+          />
         </Otherwise>
       </Choose>
-      <Skeleton
-        h={getHeightFromRelativeToLayout(columnsCount, factorScale)}
-        mt={3}
-        isLoaded={status !== 'pending'}
-      >
-        <Image
-          size="lg"
-          resizeMode="cover"
-          source={{
-            uri: pokePhoto,
-          }}
-          alt="Pokemon image"
-        />
-      </Skeleton>
     </HStack>
   );
 }
@@ -51,6 +45,6 @@ CardImage.defaultProps = {
 CardImage.propTypes = {
   columnsCount: PropTypes.number,
   factorScale: PropTypes.number,
-  isLoading: false,
+  isLoading: PropTypes.bool,
   pokePhoto: PropTypes.string,
 };

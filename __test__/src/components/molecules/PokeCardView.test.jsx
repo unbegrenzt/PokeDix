@@ -1,17 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 import { NativeBaseProvider } from 'native-base';
+import { inset } from '_utils/index';
 
-const { default: PokeCardView } = require('_components/atoms/PokeCardView');
-
-const inset = {
-  frame: {
-    x: 0, y: 0, width: 0, height: 0,
-  },
-  insets: {
-    top: 0, left: 0, right: 0, bottom: 0,
-  },
-};
+const { PokeCardView } = require('_components/molecules/index');
 
 describe('<PokeCardView />', () => {
   it('renders correctly', () => {

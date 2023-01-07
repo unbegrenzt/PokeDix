@@ -7,7 +7,8 @@
   "extends": [
     "plugin:react/recommended",
     "airbnb",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:jsx-control-statements/recommended"
   ],
   "overrides": [],
   "parserOptions": {
@@ -17,7 +18,8 @@
   "plugins": [
     "react",
     "module-resolver",
-    "jest"
+    "jest",
+    "jsx-control-statements"
   ],
   "rules": {
     "jest/no-disabled-tests": "warn",
@@ -26,7 +28,23 @@
     "jest/prefer-to-have-length": "warn",
     "jest/valid-expect": "error",
     "module-resolver/use-alias": 2,
-    "import/no-extraneous-dependencies": ["off", {"devDependencies": ["**/*.test.js", "**/*.spec.js", "**/*.test.jsx", "**/*.spec.jsx"]}]
+    "import/no-extraneous-dependencies": [
+      "off",
+      {
+        "devDependencies": [
+          "**/*.test.js",
+          "**/*.spec.js",
+          "**/*.test.jsx",
+          "**/*.spec.jsx"
+        ]
+      }
+    ],
+    "react/jsx-no-undef": [
+      2,
+      {
+        "allowGlobals": true
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

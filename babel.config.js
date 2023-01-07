@@ -21,6 +21,7 @@ module.exports = (api) => {
           },
         },
       ],
+      ['jsx-control-statements'],
     ],
   };
 };

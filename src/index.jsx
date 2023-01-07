@@ -2,11 +2,11 @@ import React from 'react';
 import {
   NativeBaseProvider, FlatList, Box, Heading,
 } from 'native-base';
-import PokeCardView from '_components/atoms/PokeCardView';
+import PokeCardView from '_components/molecules/PokeCardView';
 import {
   StyleSheet, Dimensions,
 } from 'react-native';
-import PokeCardInvisible from '_components/atoms/PokeCardInvisible';
+import PokeCardInvisible from '_components/molecules/PokeCardInvisible';
 
 const source = [
   { key: 'A' }, { key: 'B' }, { key: 'C' }, { key: 'D' }, { key: 'E' }, { key: 'F' }, { key: 'G' }, { key: 'H' }, { key: 'I' },

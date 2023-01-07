@@ -5,6 +5,7 @@ import {
 import { ErrorBoundary } from 'react-error-boundary';
 import PropTypes from 'prop-types';
 import { Dimensions } from 'react-native';
+import { CardLayout } from '_components/atoms/index';
 
 function ErrorFallback({ error }) {
   return (
@@ -30,20 +31,11 @@ export default function PokeCardInvisible({
   factorScale = 0.75,
 }) {
   return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-    >
-      <Box
-        bg="transparent"
-        py="4"
-        px="3"
-        borderRadius="5"
-        margin={2}
-        rounded="md"
-        flex={1}
-        height={(Dimensions.get('window').width / columnsCount) * factorScale}
-      />
-    </ErrorBoundary>
+    <CardLayout
+      bg="transparent"
+      columnsCount={columnsCount}
+      factorScale={factorScale}
+    />
   );
 }
 

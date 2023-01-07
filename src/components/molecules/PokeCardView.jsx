@@ -1,25 +1,17 @@
 import { React } from 'react';
 import {
-  Box, HStack, Text, Image, Heading, Skeleton,
+  Box, HStack, Text, Image, Heading, Skeleton, Card,
 } from 'native-base';
 import PropTypes from 'prop-types';
 import { getHeightFromRelativeToLayout } from '_utils/calculators';
 import { useAsync } from '_hooks/index';
 import Constants from 'expo-constants';
 import { ErrorBoundary } from 'react-error-boundary';
+import { CardLayout, CardTitle } from '_components/atoms/index';
 
 function ErrorFallback({ error }) {
   return (
-    <Box
-      bg="trueGray.100"
-      py="4"
-      px="3"
-      borderRadius="5"
-      margin={2}
-      rounded="md"
-      flex={1}
-      height={getHeightFromRelativeToLayout(2, 0.75)}
-    >
+    <CardLayout>
       <HStack>
         <Heading color="darkText" size="md">No se pudo cargar</Heading>
         <Text fontSize="md"> </Text>
@@ -35,7 +27,7 @@ function ErrorFallback({ error }) {
           alt="Pokemon image"
         />
       </HStack>
-    </Box>
+    </CardLayout>
   );
 }
 ErrorFallback.defaultProps = {
@@ -74,27 +66,15 @@ export default function PokeCardView({
 
   return (
     <>
-      {/* {status === 'error' && <ErrorFallback error={error} />} */}
-      {status === 'error' && <ErrorFallback error={error} />}
+      {status === 'error' && (
+        <ErrorFallback error={error} />
+      )}
       {status === 'pending' && (
-        <Box
-          bg="trueGray.100"
-          py="4"
-          px="3"
-          borderRadius="5"
-          margin={2}
-          rounded="md"
-          flex={1}
-          height={getHeightFromRelativeToLayout(columnsCount, factorScale)}
+        <CardLayout
+          columnsCount={columnsCount}
+          factorScale={factorScale}
         >
-          <HStack>
-            <Skeleton.Text lines={1} isLoaded={status !== 'pending'}>
-              <Heading color="darkText" size="md">{pokeName}</Heading>
-              <Heading color="darkText" size="md">{pokeName}</Heading>
-              <Text fontSize="md"> </Text>
-              <Text color="gray.500" fontSize="md">{pokeNumber}</Text>
-            </Skeleton.Text>
-          </HStack>
+          <CardTitle isLoading />
           <HStack justifyContent="center">
             <Skeleton h={getHeightFromRelativeToLayout(columnsCount, 0.45)} mt={3} isLoaded={status !== 'pending'}>
               <Image
@@ -107,29 +87,20 @@ export default function PokeCardView({
               />
             </Skeleton>
           </HStack>
-        </Box>
+        </CardLayout>
       )}
       {status === 'success' && (
-        <Box
-          bg="trueGray.100"
-          py="4"
-          px="3"
-          borderRadius="5"
-          margin={2}
-          rounded="md"
-          flex={1}
-          height={getHeightFromRelativeToLayout(columnsCount, factorScale)}
-        >
-          <HStack>
-            <Skeleton.Text lines={1} isLoaded={status !== 'pending'}>
-              <Heading color="darkText" size="md">{pokeName}</Heading>
-              <Heading color="darkText" size="md">{pokeName}</Heading>
-              <Text fontSize="md"> </Text>
-              <Text color="gray.500" fontSize="md">{pokeNumber}</Text>
-            </Skeleton.Text>
-          </HStack>
+        <CardLayout>
+          <CardTitle
+            pokeName={pokeName}
+            pokeNumber={pokeNumber}
+          />
           <HStack justifyContent="center">
-            <Skeleton h={getHeightFromRelativeToLayout(columnsCount, 0.45)} mt={3} isLoaded={status !== 'pending'}>
+            <Skeleton
+              h={getHeightFromRelativeToLayout(columnsCount, 0.45)}
+              mt={3}
+              isLoaded={status !== 'pending'}
+            >
               <Image
                 size="lg"
                 resizeMode="cover"
@@ -140,7 +111,7 @@ export default function PokeCardView({
               />
             </Skeleton>
           </HStack>
-        </Box>
+        </CardLayout>
       )}
     </>
   );

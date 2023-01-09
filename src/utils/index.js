@@ -1,5 +1,13 @@
 import {
-  getHeightFromRelativeToLayout, defaultScale, inset,
+  getHeightFromRelativeToLayout,
+  defaultScale,
+  inset,
+  convertIdToPokeNumber,
 } from './calculators';
 
-export { getHeightFromRelativeToLayout, defaultScale, inset };
+export {
+  getHeightFromRelativeToLayout,
+  defaultScale,
+  inset,
+  convertIdToPokeNumber,
+};

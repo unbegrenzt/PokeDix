@@ -19,4 +19,17 @@ const inset = {
   },
 };
 
-export { getHeightFromRelativeToLayout, defaultScale, inset };
+const pad = (num, size) => {
+  let paddedNum = num.toString();
+  while (paddedNum.length < size) paddedNum = `0${paddedNum}`;
+  return paddedNum;
+};
+
+const convertIdToPokeNumber = (pokeIdNumber) => `#${pad(pokeIdNumber, 3)}`;
+
+export {
+  getHeightFromRelativeToLayout,
+  defaultScale,
+  inset,
+  convertIdToPokeNumber,
+};

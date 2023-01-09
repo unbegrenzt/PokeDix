@@ -2,30 +2,41 @@ import { React } from 'react';
 import PropTypes from 'prop-types';
 import { useAsync } from '_hooks/index';
 import { CardLayout, CardTitle, CardImage } from '_components/atoms/index';
+import rollbar from '_utils/rollbar';
+import { convertIdToPokeNumber } from '_utils/index';
 import PokeCardErrorView from './PokeCardErrorView';
 
 // An async function for testing our hook.
 // Will be successful 50% of the time.
-const myFunction = () => new Promise((resolve, reject) => {
-  setTimeout(() => {
-    const rnd = Math.random() * 10;
-    rnd <= 5
-      ? resolve('Submitted successfully 🙌')
-      : reject('Oh no there was an error 😞');
-  }, 2000);
-});
+const getPokemonData = async () => {
+  try {
+    const response = await fetch('https://pokeapi.co/api/v2/pokemon/3');
+    if (!response.ok) {
+      const message = `An error has occurred: ${response.status}`;
+      throw new Error(message);
+    }
+    const pokeData = await response.json();
+    return {
+      pokeName: pokeData?.species?.name,
+      pokeNumber: convertIdToPokeNumber(pokeData?.id),
+      pokePhoto: pokeData?.sprites?.other['official-artwork']?.front_default,
+    };
+  } catch (error) {
+    rollbar.error(error, error);
+  }
+  return {};
+};
 
-const pokeName = 'Mew';
-const pokeNumber = '#151';
-const pokePhoto = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png';
 export default function PokeCardView({
   columnsCount = 2,
   factorScale = 0.75,
   pokeNameId = 'Mew',
 }) {
   const {
-    status, value, error,
-  } = useAsync(myFunction);
+    status,
+    value,
+    error,
+  } = useAsync(getPokemonData);
 
   return (
     <>
@@ -51,13 +62,13 @@ export default function PokeCardView({
           factorScale={factorScale}
         >
           <CardTitle
-            pokeName={pokeName}
-            pokeNumber={pokeNumber}
+            pokeName={value.pokeName}
+            pokeNumber={value.pokeNumber}
           />
           <CardImage
             columnsCount={columnsCount}
             factorScale={factorScale}
-            pokePhoto={pokePhoto}
+            pokePhoto={value.pokePhoto}
           />
         </CardLayout>
       )}

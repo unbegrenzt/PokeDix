@@ -53,7 +53,7 @@ const renderItem = ({ item }) => {
     return <PokeCardInvisible columnsCount={numColumns} factorScale={factorScale} />;
   }
   return (
-    <PokeCardView columnsCount={numColumns} factorScale={factorScale} />
+    <PokeCardView columnsCount={numColumns} factorScale={factorScale} pokeNameId="10" />
   );
 };
 

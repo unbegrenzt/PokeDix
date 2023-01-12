@@ -1,4 +1,6 @@
 import React from 'react';
+import { SWRConfig } from 'swr';
+import rollbar from '_utils/rollbar';
 import {
   NativeBaseProvider, FlatList, Box, Heading,
 } from 'native-base';
@@ -9,7 +11,15 @@ import {
 import PokeCardInvisible from '_components/molecules/PokeCardInvisible';
 
 const source = [
-  { key: 'A' }, { key: 'B' }, { key: 'C' }, { key: 'D' }, { key: 'E' }, { key: 'F' }, { key: 'G' }, { key: 'H' }, { key: 'I' },
+  { key: '1' },
+  { key: '2' },
+  { key: '3' },
+  { key: '4' },
+  { key: '5' },
+  { key: '6' },
+  { key: '7' },
+  { key: '8' },
+  { key: '9' },
 ];
 
 const formatData = (data, numColumns) => {
@@ -53,7 +63,7 @@ const renderItem = ({ item }) => {
     return <PokeCardInvisible columnsCount={numColumns} factorScale={factorScale} />;
   }
   return (
-    <PokeCardView columnsCount={numColumns} factorScale={factorScale} pokeNameId="10" />
+    <PokeCardView columnsCount={numColumns} factorScale={factorScale} pokeNameId={item.key} />
   );
 };
 
@@ -61,19 +71,29 @@ const keyExtractorFn = (item) => item.key;
 
 export default function Index() {
   return (
-    <NativeBaseProvider>
-      <Box flex={1} marginVertical={40}>
-        <Heading size="xl" p="4" pb="5" bold>
-          Pokedix
-        </Heading>
-        <FlatList
-          data={formatData(source, numColumns)}
-          style={styles.container}
-          renderItem={renderItem}
-          numColumns={numColumns}
-          keyExtractor={keyExtractorFn}
-        />
-      </Box>
-    </NativeBaseProvider>
+    <SWRConfig value={{
+      onError: (error, key) => {
+        rollbar.error(error, key);
+      },
+    }}
+    >
+      <NativeBaseProvider>
+        <Box
+          flex={1}
+          marginVertical={40}
+        >
+          <Heading size="xl" p="4" pb="5" bold>
+            Pokedix
+          </Heading>
+          <FlatList
+            data={formatData(source, numColumns)}
+            style={styles.container}
+            renderItem={renderItem}
+            numColumns={numColumns}
+            keyExtractor={keyExtractorFn}
+          />
+        </Box>
+      </NativeBaseProvider>
+    </SWRConfig>
   );
 }

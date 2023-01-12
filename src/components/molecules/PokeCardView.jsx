@@ -29,7 +29,6 @@ export default function PokeCardView({
           <CardImage
             isLoading={isLoading && !pokeData}
             columnsCount={columnsCount}
-            factorScale={factorScale}
             pokePhoto={pokeData?.pokePhoto}
           />
         </CardLayout>

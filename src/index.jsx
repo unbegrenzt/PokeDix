@@ -1,5 +1,6 @@
 import React from 'react';
 import { SWRConfig } from 'swr';
+import useSWRInfinite from 'swr/infinite';
 import rollbar from '_utils/rollbar';
 import {
   NativeBaseProvider, FlatList, Box, Heading,
@@ -70,6 +71,31 @@ const renderItem = ({ item }) => {
 const keyExtractorFn = (item) => item.key;
 
 export default function Index() {
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+
+  const getKey = (pageIndex, previousPageData) => {
+    // reached the end
+    if (previousPageData && !previousPageData.data) return null;
+
+    // la primera página, no tenemos `previousPageData`.
+    if (pageIndex === 0) return `/users?limit=10`;
+
+    // añadir el cursor al punto final de la API
+    return `/users?cursor=${previousPageData.nextCursor}&limit=10`;
+  };
+
+  const {
+    data,
+    error,
+    isLoading,
+    isValidating,
+    mutate,
+    size,
+    setSize
+  } = useSWRInfinite(getKey, fetcher, {});
+
+  console.log(data);
+
   return (
     <SWRConfig value={{
       onError: (error, key) => {
@@ -91,6 +117,8 @@ export default function Index() {
             renderItem={renderItem}
             numColumns={numColumns}
             keyExtractor={keyExtractorFn}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={50}
           />
         </Box>
       </NativeBaseProvider>

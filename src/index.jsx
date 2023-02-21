@@ -75,13 +75,11 @@ export default function Index() {
 
   const getKey = (pageIndex, previousPageData) => {
     // reached the end
-    if (previousPageData && !previousPageData.data) return null;
+    if (previousPageData && !previousPageData.next) return null;
 
-    // la primera página, no tenemos `previousPageData`.
-    if (pageIndex === 0) return `/users?limit=10`;
+    if (pageIndex === 0) return 'https://pokeapi.co/api/v2/pokemon/';
 
-    // añadir el cursor al punto final de la API
-    return `/users?cursor=${previousPageData.nextCursor}&limit=10`;
+    return previousPageData.next;
   };
 
   const {
@@ -91,15 +89,13 @@ export default function Index() {
     isValidating,
     mutate,
     size,
-    setSize
-  } = useSWRInfinite(getKey, fetcher, {});
-
-  console.log(data);
+    setSize,
+  } = useSWRInfinite(getKey, fetcher);
 
   return (
     <SWRConfig value={{
-      onError: (error, key) => {
-        rollbar.error(error, key);
+      onError: (err, key) => {
+        rollbar.error(err, key);
       },
     }}
     >
@@ -117,7 +113,6 @@ export default function Index() {
             renderItem={renderItem}
             numColumns={numColumns}
             keyExtractor={keyExtractorFn}
-            onEndReached={handleLoadMore}
             onEndReachedThreshold={50}
           />
         </Box>

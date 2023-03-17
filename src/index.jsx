@@ -1,38 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SWRConfig } from 'swr';
-import useSWRInfinite from 'swr/infinite';
 import rollbar from '_utils/rollbar';
 import {
-  NativeBaseProvider, FlatList, Box, Heading,
+  NativeBaseProvider,
+  FlatList,
+  Box,
+  Heading,
+  HStack,
+  Spinner,
 } from 'native-base';
 import PokeCardView from '_components/molecules/PokeCardView';
 import {
-  StyleSheet, Dimensions,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator,
+  View,
 } from 'react-native';
+import Constants from 'expo-constants';
 import PokeCardInvisible from '_components/molecules/PokeCardInvisible';
-
-const source = [
-  { key: '1' },
-  { key: '2' },
-  { key: '3' },
-  { key: '4' },
-  { key: '5' },
-  { key: '6' },
-  { key: '7' },
-  { key: '8' },
-  { key: '9' },
-];
+import Lottie from 'lottie-react-native';
+import { element } from 'prop-types';
 
 const formatData = (data, numColumns) => {
-  const numberOfFullRows = Math.floor(data.length / numColumns);
+  const pokeData = data[0];
+  const numberOfFullRows = Math.floor(pokeData.length / numColumns);
 
-  let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
+  let numberOfElementsLastRow = pokeData.length - (numberOfFullRows * numColumns);
   while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
-    data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
+    pokeData.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
     numberOfElementsLastRow += 1;
   }
-
-  return data;
+  return pokeData;
 };
 
 const numColumns = 2;
@@ -57,6 +55,10 @@ const styles = StyleSheet.create({
   itemText: {
     color: '#fff',
   },
+  loaderStyle: {
+    marginVertical: 16,
+    alignItems: 'center',
+  },
 });
 
 const renderItem = ({ item }) => {
@@ -64,33 +66,60 @@ const renderItem = ({ item }) => {
     return <PokeCardInvisible columnsCount={numColumns} factorScale={factorScale} />;
   }
   return (
-    <PokeCardView columnsCount={numColumns} factorScale={factorScale} pokeNameId={item.key} />
+    <PokeCardView columnsCount={numColumns} factorScale={factorScale} pokeNameId={item.name} />
   );
 };
 
-const keyExtractorFn = (item) => item.key;
+const keyExtractorFn = (item) => item.name;
 
 export default function Index() {
-  const fetcher = (url) => fetch(url).then((res) => res.json());
+  const [nextPagePointer, setNextPagePointer] = useState(`${Constants.expoConfig.extra.apiUrl}/pokemon/`);
+  const [pokemonList, setPokemonList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetcher = async () => {
+    setIsLoading(true);
+    const fetchData = await fetch(nextPagePointer);
+    const pokeListData = await fetchData.json();
+
+    console.log(`pokeListData: ${JSON.stringify(pokeListData)}`);
+
+    setNextPagePointer(pokeListData.next);
+    setIsLoading(false);
+    setPokemonList([...pokemonList, ...pokeListData.results]);
+  };
 
   const getKey = (pageIndex, previousPageData) => {
+    console.log(`nextPagePointer: ${JSON.stringify(nextPagePointer)}`);
     // reached the end
-    if (previousPageData && !previousPageData.next) return null;
+    if (previousPageData && !nextPagePointer) return null;
 
     if (pageIndex === 0) return 'https://pokeapi.co/api/v2/pokemon/';
 
-    return previousPageData.next;
+    return nextPagePointer;
   };
 
-  const {
-    data,
-    error,
-    isLoading,
-    isValidating,
-    mutate,
-    size,
-    setSize,
-  } = useSWRInfinite(getKey, fetcher);
+  // <View style={styles.loaderStyle}>
+  /* <ActivityIndicator size="large" color="#adef" /> */
+  /* </View> */
+
+  const renderLoader = () => (
+    isLoading
+      ? (
+        <HStack space={8} justifyContent="center" alignItems="center">
+          <Spinner size="lg" />
+        </HStack>
+      ) : null
+  );
+
+  const loadMoreItem = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  useEffect(() => {
+    fetcher();
+  }, [currentPage]);
 
   return (
     <SWRConfig value={{
@@ -107,14 +136,25 @@ export default function Index() {
           <Heading size="xl" p="4" pb="5" bold>
             Pokedix
           </Heading>
-          <FlatList
-            data={formatData(source, numColumns)}
-            style={styles.container}
-            renderItem={renderItem}
-            numColumns={numColumns}
-            keyExtractor={keyExtractorFn}
-            onEndReachedThreshold={50}
-          />
+          <Choose>
+            <When condition={pokemonList.length > 0}>
+              <FlatList
+                data={pokemonList}
+                style={styles.container}
+                renderItem={renderItem}
+                numColumns={numColumns}
+                keyExtractor={keyExtractorFn}
+                onEndReached={loadMoreItem}
+                ListFooterComponent={renderLoader}
+                onEndReachedThreshold={0}
+              />
+            </When>
+            <Otherwise>
+              <Heading size="xl" p="4" pb="5" bold>
+                Loading
+              </Heading>
+            </Otherwise>
+          </Choose>
         </Box>
       </NativeBaseProvider>
     </SWRConfig>

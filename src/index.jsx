@@ -12,26 +12,9 @@ import {
 import PokeCardView from '_components/molecules/PokeCardView';
 import {
   StyleSheet,
-  Dimensions,
-  ActivityIndicator,
-  View,
 } from 'react-native';
 import Constants from 'expo-constants';
 import PokeCardInvisible from '_components/molecules/PokeCardInvisible';
-import Lottie from 'lottie-react-native';
-import { element } from 'prop-types';
-
-const formatData = (data, numColumns) => {
-  const pokeData = data[0];
-  const numberOfFullRows = Math.floor(pokeData.length / numColumns);
-
-  let numberOfElementsLastRow = pokeData.length - (numberOfFullRows * numColumns);
-  while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
-    pokeData.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
-    numberOfElementsLastRow += 1;
-  }
-  return pokeData;
-};
 
 const numColumns = 2;
 const factorScale = 0.75;
@@ -40,24 +23,6 @@ const styles = StyleSheet.create({
   container: {
     marginLeft: 5,
     marginRight: 5,
-  },
-  item: {
-    backgroundColor: '#4D243D',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    margin: 3,
-    height: Dimensions.get('window').width / numColumns, // approximate a square
-  },
-  itemInvisible: {
-    backgroundColor: 'transparent',
-  },
-  itemText: {
-    color: '#fff',
-  },
-  loaderStyle: {
-    marginVertical: 16,
-    alignItems: 'center',
   },
 });
 
@@ -83,34 +48,22 @@ export default function Index() {
     const fetchData = await fetch(nextPagePointer);
     const pokeListData = await fetchData.json();
 
-    console.log(`pokeListData: ${JSON.stringify(pokeListData)}`);
-
     setNextPagePointer(pokeListData.next);
     setIsLoading(false);
     setPokemonList([...pokemonList, ...pokeListData.results]);
   };
 
-  const getKey = (pageIndex, previousPageData) => {
-    console.log(`nextPagePointer: ${JSON.stringify(nextPagePointer)}`);
-    // reached the end
-    if (previousPageData && !nextPagePointer) return null;
-
-    if (pageIndex === 0) return 'https://pokeapi.co/api/v2/pokemon/';
-
-    return nextPagePointer;
-  };
-
-  // <View style={styles.loaderStyle}>
-  /* <ActivityIndicator size="large" color="#adef" /> */
-  /* </View> */
-
   const renderLoader = () => (
-    isLoading
-      ? (
+    <Choose>
+      <When condition={isLoading}>
         <HStack space={8} justifyContent="center" alignItems="center">
           <Spinner size="lg" />
         </HStack>
-      ) : null
+      </When>
+      <Otherwise>
+        {null}
+      </Otherwise>
+    </Choose>
   );
 
   const loadMoreItem = () => {

@@ -1,0 +1,107 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:jest/recommended",
+    "plugin:jsx-control-statements/recommended"
+  ],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "module-resolver",
+    "jest",
+    "jsx-control-statements"
+  ],
+  "rules": {
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "module-resolver/use-alias": 2,
+    "import/no-extraneous-dependencies": [
+      "off",
+      {
+        "devDependencies": [
+          "**/*.test.js",
+          "**/*.spec.js",
+          "**/*.test.jsx",
+          "**/*.spec.jsx"
+        ]
+      }
+    ],
+    "react/jsx-no-undef": [
+      2,
+      {
+        "allowGlobals": true
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          [
+            "_assets",
+            "./src/assets"
+          ],
+          [
+            "_components",
+            "./src/components"
+          ],
+          [
+            "_atoms",
+            "./src/components/atoms"
+          ],
+          [
+            "_molecules",
+            "./src/components/molecules"
+          ],
+          [
+            "_organisms",
+            "./src/components/organisms"
+          ],
+          [
+            "_navigations",
+            "./src/navigations"
+          ],
+          [
+            "_scenes",
+            "./src/scenes"
+          ],
+          [
+            "_services",
+            "./src/services"
+          ],
+          [
+            "_styles",
+            "./src/styles"
+          ],
+          [
+            "_utils",
+            "./src/utils"
+          ],
+          [
+            "_hooks",
+            "./src/hooks"
+          ]
+        ],
+        "extensions": [
+          ".ts",
+          ".js",
+          ".jsx",
+          ".json"
+        ]
+      }
+    }
+  }
+}

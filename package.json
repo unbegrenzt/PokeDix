@@ -1,0 +1,70 @@
+{
+  "name": "poke_dix",
+  "version": "0.0.1",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/coverage/**",
+      "!**/App.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/jest.setup.js"
+    ],
+    "transform": {
+      "^.+\\.[jt]sx?$": "babel-jest"
+    }
+  },
+  "dependencies": {
+    "@expo/webpack-config": "^0.17.2",
+    "expo": "~47.0.9",
+    "expo-constants": "~14.0.2",
+    "expo-status-bar": "~1.4.2",
+    "jest": "^26.6.3",
+    "jest-expo": "^47.0.1",
+    "lottie-react-native": "^5.1.4",
+    "native-base": "^3.4.25",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
+    "react-error-boundary": "^3.1.4",
+    "react-native": "0.70.8",
+    "react-native-safe-area-context": "4.4.1",
+    "react-native-vector-icons": "^9.2.0",
+    "react-native-web": "~0.18.9",
+    "rollbar-react-native": "^0.9.2",
+    "swr": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@testing-library/react-native": "11.5.0",
+    "babel-jest": "^29.3.1",
+    "babel-plugin-jsx-control-statements": "^4.1.2",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "eslint": "^8.30.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.1.7",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-jsx-control-statements": "^3.0.0",
+    "eslint-plugin-module-resolver": "^1.5.0",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prop-types": "^15.8.1",
+    "react-test-renderer": "18.1.0"
+  },
+  "private": false
+}

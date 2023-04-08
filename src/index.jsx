@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { SWRConfig } from 'swr';
 import rollbar from '_utils/rollbar';
 import {
@@ -10,21 +10,12 @@ import {
   Spinner,
 } from 'native-base';
 import PokeCardView from '_components/molecules/PokeCardView';
-import {
-  StyleSheet,
-} from 'react-native';
 import Constants from 'expo-constants';
 import PokeCardInvisible from '_components/molecules/PokeCardInvisible';
+import PokeCardListView from '_components/organisms/PokeCardListView';
 
 const numColumns = 2;
 const factorScale = 0.75;
-
-const styles = StyleSheet.create({
-  container: {
-    marginLeft: 5,
-    marginRight: 5,
-  },
-});
 
 const renderItem = ({ item }) => {
   if (item.empty === true) {
@@ -42,6 +33,8 @@ export default function Index() {
   const [pokemonList, setPokemonList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+
+  const memoizedPokeCards = useMemo(() => renderItem, [pokemonList]);
 
   const fetcher = async () => {
     setIsLoading(true);
@@ -82,33 +75,14 @@ export default function Index() {
     }}
     >
       <NativeBaseProvider>
-        <Box
-          flex={1}
-          marginVertical={40}
-        >
-          <Heading size="xl" p="4" pb="5" bold>
-            Pokedix
-          </Heading>
-          <Choose>
-            <When condition={pokemonList.length > 0}>
-              <FlatList
-                data={pokemonList}
-                style={styles.container}
-                renderItem={renderItem}
-                numColumns={numColumns}
-                keyExtractor={keyExtractorFn}
-                onEndReached={loadMoreItem}
-                ListFooterComponent={renderLoader}
-                onEndReachedThreshold={0}
-              />
-            </When>
-            <Otherwise>
-              <Heading size="xl" p="4" pb="5" bold>
-                Loading
-              </Heading>
-            </Otherwise>
-          </Choose>
-        </Box>
+        <PokeCardListView
+          pokemonList={pokemonList}
+          renderItem={memoizedPokeCards}
+          keyExtractorFn={keyExtractorFn}
+          loadMoreItem={loadMoreItem}
+          renderLoader={renderLoader}
+          numColumns={numColumns}
+        />
       </NativeBaseProvider>
     </SWRConfig>
   );

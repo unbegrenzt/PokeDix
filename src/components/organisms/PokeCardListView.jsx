@@ -33,7 +33,7 @@ export default function PokeCardListView({
         Pokedix
       </Heading>
       <Choose>
-        <When condition={pokemonList.length > 0}>
+        <When condition={pokemonList?.length > 0}>
           <FlatList
             removeClippedSubviews
             data={pokemonList}

@@ -1,13 +1,13 @@
 import { React, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Lottie from 'lottie-react-native';
-import rollbar from '_utils/rollbar';
+import logger from '_utils/logger';
 import CardLayout from '../atoms/CardLayout';
 
 const errorAnim = require('_assets/images/lottie/9195-error.json');
 
 export default function PokeCardErrorView({ error }) {
-  rollbar.error('The PokeCard can not load', error);
+  logger.captureException(new Error('The PokeCard can not load', error));
 
   const animationRef = useRef(null);
 

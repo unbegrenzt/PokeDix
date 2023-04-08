@@ -5,7 +5,6 @@ const pJson = require('../../package.json');
 
 Sentry.init({
   dsn: Constants.expoConfig.extra.SENTRY_DSN,
-
   // Alternatively, use `process.env.npm_package_version` for a dynamic release version
   // if your build tool supports it.
   release: `puppy@${pJson.version}`,

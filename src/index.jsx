@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SWRConfig } from 'swr';
-import rollbar from '_utils/rollbar';
+import logger from '_utils/logger';
 import {
   NativeBaseProvider,
   HStack,
@@ -60,7 +60,7 @@ export default function Index() {
   return (
     <SWRConfig value={{
       onError: (err, key) => {
-        rollbar.error(err, key);
+        logger.captureException(new Error(err, key));
       },
     }}
     >

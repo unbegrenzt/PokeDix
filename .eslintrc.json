@@ -7,7 +7,6 @@
   "extends": [
     "plugin:react/recommended",
     "airbnb",
-    "plugin:jest/recommended",
     "plugin:jsx-control-statements/recommended"
   ],
   "overrides": [],
@@ -18,15 +17,9 @@
   "plugins": [
     "react",
     "module-resolver",
-    "jest",
     "jsx-control-statements"
   ],
   "rules": {
-    "jest/no-disabled-tests": "warn",
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error",
-    "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error",
     "module-resolver/use-alias": 2,
     "import/no-extraneous-dependencies": [
       "off",

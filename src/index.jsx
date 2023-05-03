@@ -1,62 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SWRConfig } from 'swr';
 import logger from '_utils/logger';
 import {
   NativeBaseProvider,
-  HStack,
-  Spinner,
 } from 'native-base';
-import PokeCardView from '_components/molecules/PokeCardView';
-import PokeCardInvisible from '_components/molecules/PokeCardInvisible';
-import PokeCardListView from '_components/organisms/PokeCardListView';
-import usePokeDataBulk from '_hooks/usePokeDataBulk';
-
-const numColumns = 2;
-const factorScale = 0.75;
-
-const renderItem = ({ item }) => {
-  if (item.empty === true) {
-    return <PokeCardInvisible columnsCount={numColumns} factorScale={factorScale} />;
-  }
-  return (
-    <PokeCardView columnsCount={numColumns} factorScale={factorScale} pokeNameId={item.name} />
-  );
-};
-
-const keyExtractorFn = (item) => item.name;
+import PokeListScene from '_scenes/PokeListScene';
 
 export default function Index() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const { isLoading, pokemonList } = usePokeDataBulk(currentPage);
-
-  const renderLoader = () => (
-    <Choose>
-      <When condition={isLoading}>
-        <HStack space={8} justifyContent="center" alignItems="center">
-          <Spinner size="lg" />
-        </HStack>
-      </When>
-      <Otherwise>
-        {null}
-      </Otherwise>
-    </Choose>
-  );
-
-  const loadMoreItem = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
-  if (!pokemonList) {
-    return (
-      <NativeBaseProvider>
-        <HStack space={8} justifyContent="center" alignItems="center">
-          <Spinner size="lg" />
-        </HStack>
-      </NativeBaseProvider>
-    );
-  }
-
   return (
     <SWRConfig value={{
       onError: (err, key) => {
@@ -65,14 +15,7 @@ export default function Index() {
     }}
     >
       <NativeBaseProvider>
-        <PokeCardListView
-          pokemonList={pokemonList}
-          renderItem={renderItem}
-          keyExtractorFn={keyExtractorFn}
-          loadMoreItem={loadMoreItem}
-          renderLoader={renderLoader}
-          numColumns={numColumns}
-        />
+        <PokeListScene />
       </NativeBaseProvider>
     </SWRConfig>
   );

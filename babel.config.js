@@ -22,6 +22,7 @@ module.exports = (api) => {
         },
       ],
       ['jsx-control-statements'],
+      require.resolve('expo-router/babel'),
     ],
   };
 };

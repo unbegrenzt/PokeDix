@@ -1,4 +1,5 @@
 {
+  "scheme": "com.onidevs.pokedix",
   "expo": {
     "name": "Pokedix",
     "slug": "Pokedix",
@@ -6,7 +7,7 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "userInterfaceStyle": "automatic",
-    "scheme": "acme",
+    "scheme": "com.onidevs.pokedix",
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
